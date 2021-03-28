@@ -1,0 +1,27 @@
+{
+  "login1": {
+    "username": "123",
+    "password": "123",
+    "role": 1
+  },
+  "login2": {
+    "username": "12345",
+    "password": "12345",
+    "role": 1
+  },
+  "login3": {
+    "username": "ceshi",
+    "password": "123",
+    "role": 1
+  },
+  "login4": {
+    "username": "ceshi2",
+    "password": "123",
+    "role": 1
+  },
+  "login5": {
+    "username": "ceshi3",
+    "password": "123",
+    "role": 1
+  }
+}
