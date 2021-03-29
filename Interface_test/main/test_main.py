@@ -3,6 +3,8 @@ import json
 import pytest
 
 from TestProject.Interface_test.base.runmethod import RunMethod
+from TestProject.Interface_test.dataconfig.data_config import request_method, request_url, request_data
+from TestProject.Interface_test.dataconfig.depend_data import DependData
 from TestProject.Interface_test.dataconfig.get_data import GetData
 
 
@@ -24,6 +26,7 @@ class Testhttp:
         print(row_count)
         for i in range(2, row_count+1):
             is_run = self.data.get_is_run(i)
+            is_depend = self.data.get_depend_id(i)
             url = self.data.get_request_url(i)
             method = self.data.get_request_method(i)
             expect_result = self.data.get_expect_result(i)
@@ -32,15 +35,31 @@ class Testhttp:
             else:
                 data = None
             if is_run:
-                res = self.main.run_main(method=method, url=url, data=data)
-                # print(res.status_code)
-                response_data = json.loads(res.text)
-                # print(json.dumps(json.loads(res.text), indent=2))
-
-                if self.verify_result(expect_result, response_data):
-                    print("测试通过")
+                # 判断没有依赖的时候
+                if is_depend is None:
+                    res = self.main.run_main(method=method, url=url, data=data)
+                    # print(res.status_code)
+                    response_data = json.loads(res.text)
+                    # print(json.dumps(json.loads(res.text), indent=2))
+                    if self.verify_result(expect_result, response_data):
+                        print("测试通过")
+                    else:
+                        print("测试失败")
                 else:
-                    print("测试失败")
+                    depend_data = list(DependData(is_depend).get_data_by_case_id())
+                    print(depend_data)
+                    request_method_id = int(request_method())
+                    url_id = int(request_url())
+                    data_id = int(request_data())
+                    if depend_data[request_method_id] == 'post':
+                        depend_request_data = self.data.get_request_data_json(depend_data[data_id-1])
+                    else:
+                        depend_request_data = None
+                    # res = self.main.run_main(method=depend_data[request_method_id], url=depend_data[url_id], data=depend_request_data)
+                    print(depend_data[request_method_id-1], depend_data[url_id-1], depend_request_data)
+
+
+
 
 
 if __name__ == '__main__':

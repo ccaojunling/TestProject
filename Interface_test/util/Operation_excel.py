@@ -40,14 +40,20 @@ class OperationExcel:
             row_list.append(i.value)
         return row_list
 
-
+    # 获取某一列的内容,默认是第一列的数据
+    def get_col_value(self, col='A'):
+        col_list = []
+        for i in self.data[col]:
+            col_list.append(i.value)
+        return col_list
 
 
 if __name__ == '__main__':
     ope = OperationExcel("../data/interface_data.xlsx")
-    print(ope.data)
-    print(ope.get_cell_vales(1, 2))
-    print(ope.get_case_num())
-    print(ope.get_row_value(1))
+    # print(ope.data)
+    # print(ope.get_cell_vales(1, 2))
+    # print(ope.get_case_num())
+    # print(ope.get_row_value(1))
+    print(ope.get_col_value())
 
 
